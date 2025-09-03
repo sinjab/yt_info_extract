@@ -13,7 +13,7 @@ A robust Python library for extracting YouTube video metadata including title, d
 
 - **Multiple Extraction Strategies**: YouTube Data API v3 (official), yt-dlp, pytubefix
 - **Automatic Fallback**: Seamlessly switches between methods if one fails
-- **Flexible Input**: Support for video IDs and various YouTube URL formats
+- **Simple Input**: Accepts YouTube video IDs only (11 characters)
 - **Batch Processing**: Extract information from multiple videos efficiently
 - **Multiple Output Formats**: Text, JSON, CSV
 - **Command Line Interface**: Easy-to-use CLI for quick extractions
@@ -142,22 +142,18 @@ batch_results = get_video_info_batch(["jNQXAC9IVRw", "dQw4w9WgXcQ"])
 export_video_info(batch_results, "videos.csv", format_type="csv")
 ```
 
-### Different URL Formats
+### Video ID Format
 
 ```python
 from yt_info_extract import get_video_info
 
-# All of these work:
-formats = [
-    "jNQXAC9IVRw",  # Video ID
-    "https://www.youtube.com/watch?v=jNQXAC9IVRw",  # Standard URL
-    "https://youtu.be/jNQXAC9IVRw",  # Short URL
-    "https://www.youtube.com/embed/jNQXAC9IVRw",  # Embed URL
-]
+# Only video IDs are accepted (11 characters: A-Z, a-z, 0-9, _, -):
+video_id = "jNQXAC9IVRw"
+info = get_video_info(video_id)
+print(f"✓ {video_id} -> {info['title']}")
 
-for fmt in formats:
-    info = get_video_info(fmt)
-    print(f"✓ {fmt} -> {info['title']}")
+# URLs are NOT supported - extract the video ID manually if needed:
+# https://www.youtube.com/watch?v=jNQXAC9IVRw -> jNQXAC9IVRw
 ```
 
 ## Command Line Interface
@@ -181,7 +177,7 @@ yt-info -f csv -o video.csv jNQXAC9IVRw
 ### Batch Processing
 
 ```bash
-# Create a file with video IDs (one per line)
+# Create a file with video IDs only (one per line)
 echo "jNQXAC9IVRw" > video_ids.txt
 echo "dQw4w9WgXcQ" >> video_ids.txt
 
