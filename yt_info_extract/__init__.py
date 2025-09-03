@@ -31,20 +31,21 @@ __author__ = "Khaldoon Sinjab"
 __email__ = "sinjab@gmail.com"
 __description__ = "YouTube video information extraction with multiple strategies"
 
+from typing import Dict, List, Optional, Union
+
 # Main API exports
 from .extractor import YouTubeVideoInfoExtractor
 from .utils import (
-    export_to_json,
-    export_to_csv,
-    load_video_ids_from_file,
-    format_views,
-    format_publication_date,
     clean_description,
-    extract_video_stats,
     create_summary_report,
+    export_to_csv,
+    export_to_json,
+    extract_video_stats,
+    format_publication_date,
+    format_views,
+    load_video_ids_from_file,
     validate_video_info,
 )
-from typing import Optional, List, Dict, Union
 
 
 # Convenience functions for common use cases
@@ -71,11 +72,7 @@ def get_video_info(
         info = get_video_info("jNQXAC9IVRw", api_key="YOUR_KEY")
         info = get_video_info("https://www.youtube.com/watch?v=jNQXAC9IVRw", strategy="yt_dlp")
     """
-    extractor = YouTubeVideoInfoExtractor(
-        api_key=api_key, 
-        strategy=strategy, 
-        **extractor_options
-    )
+    extractor = YouTubeVideoInfoExtractor(api_key=api_key, strategy=strategy, **extractor_options)
     return extractor.get_video_info(video_input)
 
 
@@ -104,11 +101,7 @@ def get_video_info_batch(
         results = get_video_info_batch(videos)
         results = get_video_info_batch(videos, api_key="YOUR_KEY", strategy="api")
     """
-    extractor = YouTubeVideoInfoExtractor(
-        api_key=api_key, 
-        strategy=strategy, 
-        **extractor_options
-    )
+    extractor = YouTubeVideoInfoExtractor(api_key=api_key, strategy=strategy, **extractor_options)
     return extractor.batch_extract(video_inputs, strategy, delay_between_requests)
 
 
@@ -142,10 +135,7 @@ def get_video_stats(
 
 
 def export_video_info(
-    video_data: Union[Dict, List[Dict]], 
-    output_file: str, 
-    format_type: str = "json",
-    **kwargs
+    video_data: Union[Dict, List[Dict]], output_file: str, format_type: str = "json", **kwargs
 ) -> bool:
     """
     Quick function to export video information to file.
@@ -162,7 +152,7 @@ def export_video_info(
     Example:
         info = get_video_info("jNQXAC9IVRw")
         export_video_info(info, "video.json")
-        
+
         batch_results = get_video_info_batch(["jNQXAC9IVRw", "dQw4w9WgXcQ"])
         export_video_info(batch_results, "videos.csv", format_type="csv")
     """
@@ -189,7 +179,7 @@ def test_extraction_methods() -> Dict[str, bool]:
         print("Available methods:", [k for k, v in methods.items() if v])
     """
     extractor = YouTubeVideoInfoExtractor()
-    
+
     return {
         "youtube_api": extractor.youtube_service is not None,
         "yt_dlp": "yt_dlp" in extractor.get_available_strategies(),
