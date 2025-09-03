@@ -253,7 +253,7 @@ class TestLoadVideoIds:
 
     def test_load_video_ids_success(self):
         """Test successful loading of video IDs"""
-        video_ids = ["jNQXAC9IVRw", "dQw4w9WgXcQ", "https://youtu.be/kJQP7kiw5Fk"]
+        video_ids = ["jNQXAC9IVRw", "dQw4w9WgXcQ", "kJQP7kiw5Fk"]
         content = "\n".join(video_ids)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False) as f:

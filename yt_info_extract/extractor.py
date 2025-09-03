@@ -49,7 +49,7 @@ class YouTubeVideoInfoExtractor:
     Features:
     - Extract video title, description, channel name, publication date, and views
     - Multi-strategy extraction with automatic fallback
-    - Support for both video IDs and full URLs
+    - Support for YouTube video IDs only
     - Rate limiting and error handling
     - Configurable timeout and retry logic
 
@@ -114,35 +114,25 @@ class YouTubeVideoInfoExtractor:
         if self.strategy == "pytubefix" and not PYTUBEFIX_AVAILABLE:
             raise ImportError("pytubefix is not installed. Install with: pip install pytubefix")
 
-    def _extract_video_id(self, video_input: str) -> Optional[str]:
+    def _validate_video_id(self, video_id: str) -> Optional[str]:
         """
-        Extract video ID from various YouTube URL formats or return if already ID.
+        Validate YouTube video ID format.
 
         Args:
-            video_input: Video ID or YouTube URL
+            video_id: YouTube video ID
 
         Returns:
-            Video ID (11 characters) or None if invalid
+            Video ID if valid, None if invalid
         """
         import re
 
-        # If it's already an 11-character ID, return it
-        if len(video_input) == 11 and video_input.isalnum():
-            return video_input
+        # YouTube video IDs are exactly 11 characters and contain only alphanumeric, underscore, and hyphen
+        if len(video_id) == 11 and re.match(r"^[A-Za-z0-9_-]{11}$", video_id):
+            return video_id
 
-        # Extract from various URL formats
-        patterns = [
-            r"(?:v=|/)([0-9A-Za-z_-]{11}).*",  # youtube.com/watch?v=ID
-            r"youtu\.be/([0-9A-Za-z_-]{11})",  # youtu.be/ID
-            r"embed/([0-9A-Za-z_-]{11})",  # youtube.com/embed/ID
-        ]
-
-        for pattern in patterns:
-            match = re.search(pattern, video_input)
-            if match:
-                return match.group(1)
-
-        logger.error(f"Could not extract video ID from: {video_input}")
+        logger.error(
+            f"Invalid video ID format: {video_id}. Must be exactly 11 characters (A-Z, a-z, 0-9, _, -)"
+        )
         return None
 
     def _get_video_info_api(self, video_id: str) -> Optional[Dict]:
@@ -278,7 +268,7 @@ class YouTubeVideoInfoExtractor:
         Extract video information using the specified or default strategy.
 
         Args:
-            video_input: YouTube video ID or URL
+            video_input: YouTube video ID (11 characters)
             strategy: Override default strategy ("api", "yt_dlp", "pytubefix", "auto")
 
         Returns:
@@ -293,7 +283,7 @@ class YouTubeVideoInfoExtractor:
             }
         """
         # Extract video ID
-        video_id = self._extract_video_id(video_input)
+        video_id = self._validate_video_id(video_input)
         if not video_id:
             logger.error(f"Invalid video input: {video_input}")
             return None
@@ -426,7 +416,7 @@ class YouTubeVideoInfoExtractor:
         Extract information for multiple videos.
 
         Args:
-            video_inputs: List of video IDs or URLs
+            video_inputs: List of YouTube video IDs (11 characters each)
             strategy: Override default strategy
             delay_between_requests: Delay between requests to avoid rate limiting
 
@@ -445,7 +435,7 @@ class YouTubeVideoInfoExtractor:
                 logger.warning(f"Failed to extract info for video: {video_input}")
                 results.append(
                     {
-                        "video_id": self._extract_video_id(video_input),
+                        "video_id": self._validate_video_id(video_input),
                         "error": "Extraction failed",
                         "extraction_method": None,
                     }

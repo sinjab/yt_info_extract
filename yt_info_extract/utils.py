@@ -200,10 +200,10 @@ def load_video_ids_from_file(file_path: str) -> List[str]:
     Load video IDs from a text file (one per line).
 
     Args:
-        file_path: Path to text file containing video IDs or URLs
+        file_path: Path to text file containing video IDs
 
     Returns:
-        List of video IDs/URLs
+        List of video IDs
     """
     try:
         with open(file_path, "r", encoding="utf-8") as f:

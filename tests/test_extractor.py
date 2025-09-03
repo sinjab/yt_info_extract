@@ -68,39 +68,39 @@ class TestYouTubeVideoInfoExtractor:
         with pytest.raises(ImportError, match="pytubefix is not installed"):
             YouTubeVideoInfoExtractor(strategy="pytubefix")
 
-    def test_extract_video_id_valid_cases(self):
-        """Test video ID extraction from various valid formats"""
+    def test_validate_video_id_valid_cases(self):
+        """Test video ID validation for valid formats"""
         extractor = YouTubeVideoInfoExtractor()
 
-        test_cases = [
-            ("jNQXAC9IVRw", "jNQXAC9IVRw"),
-            ("https://www.youtube.com/watch?v=jNQXAC9IVRw", "jNQXAC9IVRw"),
-            ("https://youtu.be/jNQXAC9IVRw", "jNQXAC9IVRw"),
-            ("https://www.youtube.com/embed/jNQXAC9IVRw", "jNQXAC9IVRw"),
-            ("https://youtube.com/watch?v=jNQXAC9IVRw&t=10s", "jNQXAC9IVRw"),
+        valid_cases = [
+            "jNQXAC9IVRw",
+            "dQw4w9WgXcQ",
+            "ScMzIvxBSi4",
+            "aBc-_123456",
+            "A1b2C3d4E5f",
         ]
 
-        for input_url, expected in test_cases:
-            result = extractor._extract_video_id(input_url)
-            assert result == expected, f"Failed for input: {input_url}"
+        for video_id in valid_cases:
+            result = extractor._validate_video_id(video_id)
+            assert result == video_id, f"Failed for input: {video_id}"
 
-    def test_extract_video_id_invalid_cases(self):
-        """Test video ID extraction from invalid formats"""
+    def test_validate_video_id_invalid_cases(self):
+        """Test video ID validation for invalid formats"""
         extractor = YouTubeVideoInfoExtractor()
 
         invalid_cases = [
             "invalid",
             "",
-            "https://vimeo.com/123456",
-            "not_a_url",
-            "https://www.youtube.com/watch?v=tooshort",
-            # Note: "toolong12345" actually extracts to "toolong1234" (11 chars)
-            # so we use a truly invalid case instead
-            "https://www.youtube.com/watch?v=",
+            "tooshort",
+            "toolongvideoid123",
+            "invalid@char",
+            "space here",
+            "dQw4w9WgXc!",
+            "https://www.youtube.com/watch?v=jNQXAC9IVRw",
         ]
 
         for invalid_input in invalid_cases:
-            result = extractor._extract_video_id(invalid_input)
+            result = extractor._validate_video_id(invalid_input)
             assert result is None, f"Should return None for: {invalid_input}"
 
     @patch("yt_info_extract.extractor.build")

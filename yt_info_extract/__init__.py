@@ -17,7 +17,7 @@ Usage:
     $ yt-info --batch video_ids.txt --output-dir output/
 
 Features:
-    - Extract video metadata from YouTube videos via video ID or URL
+    - Extract video metadata from YouTube videos via video ID only
     - Multiple extraction strategies: YouTube Data API v3, yt-dlp, pytubefix
     - Automatic fallback between extraction methods
     - Batch processing for multiple videos
@@ -59,7 +59,7 @@ def get_video_info(
     Quick function to get video information.
 
     Args:
-        video_input: YouTube video ID or URL
+        video_input: YouTube video ID (11 characters)
         api_key: YouTube Data API v3 key (optional, gets from env if not provided)
         strategy: Extraction strategy ("auto", "api", "yt_dlp", "pytubefix")
         **extractor_options: Additional options for the extractor
@@ -70,7 +70,7 @@ def get_video_info(
     Example:
         info = get_video_info("jNQXAC9IVRw")
         info = get_video_info("jNQXAC9IVRw", api_key="YOUR_KEY")
-        info = get_video_info("https://www.youtube.com/watch?v=jNQXAC9IVRw", strategy="yt_dlp")
+        info = get_video_info("jNQXAC9IVRw", strategy="yt_dlp")
     """
     extractor = YouTubeVideoInfoExtractor(api_key=api_key, strategy=strategy, **extractor_options)
     return extractor.get_video_info(video_input)
@@ -87,7 +87,7 @@ def get_video_info_batch(
     Quick function to get information for multiple videos.
 
     Args:
-        video_inputs: List of YouTube video IDs or URLs
+        video_inputs: List of YouTube video IDs (11 characters each)
         api_key: YouTube Data API v3 key (optional, gets from env if not provided)
         strategy: Extraction strategy ("auto", "api", "yt_dlp", "pytubefix")
         delay_between_requests: Delay between requests to avoid rate limiting
@@ -115,7 +115,7 @@ def get_video_stats(
     Quick function to get formatted video statistics.
 
     Args:
-        video_input: YouTube video ID or URL
+        video_input: YouTube video ID (11 characters)
         api_key: YouTube Data API v3 key (optional, gets from env if not provided)
         strategy: Extraction strategy ("auto", "api", "yt_dlp", "pytubefix")
         **extractor_options: Additional options for the extractor

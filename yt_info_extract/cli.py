@@ -79,7 +79,6 @@ Examples:
   %(prog)s -s yt_dlp jNQXAC9IVRw
   %(prog)s --batch video_ids.txt --output-dir output/
   %(prog)s --api-key YOUR_KEY jNQXAC9IVRw
-  %(prog)s https://www.youtube.com/watch?v=jNQXAC9IVRw
   
 🔑 API Key Examples:
   %(prog)s --api-key "AIza..." jNQXAC9IVRw
@@ -93,7 +92,7 @@ Examples:
     )
 
     # Positional arguments
-    parser.add_argument("video_input", nargs="?", help="YouTube video ID or URL")
+    parser.add_argument("video_input", nargs="?", help="YouTube video ID (11 characters)")
 
     # API and strategy options
     parser.add_argument(
@@ -122,7 +121,7 @@ Examples:
     parser.add_argument("--pretty", action="store_true", help="Pretty-print JSON output")
 
     # Batch processing
-    parser.add_argument("--batch", help="Path to file containing video IDs/URLs (one per line)")
+    parser.add_argument("--batch", help="Path to file containing video IDs (one per line)")
 
     parser.add_argument("--output-dir", help="Output directory for batch processing")
 

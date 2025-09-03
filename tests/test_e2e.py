@@ -29,7 +29,6 @@ from yt_info_extract.cli import main
 TEST_VIDEOS = {
     "first_youtube": {
         "id": "jNQXAC9IVRw",
-        "url": "https://www.youtube.com/watch?v=jNQXAC9IVRw",
         "title_contains": "Me at the zoo",
         "channel": "jawed",
         "min_views": 100000,  # Should have at least 100k views
@@ -37,7 +36,6 @@ TEST_VIDEOS = {
     },
     "rick_roll": {
         "id": "dQw4w9WgXcQ",
-        "url": "https://youtu.be/dQw4w9WgXcQ",
         "title_contains": "Never Gonna Give You Up",
         "channel": "Rick Astley",
         "min_views": 1000000,  # Should have at least 1M views
@@ -45,7 +43,6 @@ TEST_VIDEOS = {
     },
     "gangnam": {
         "id": "9bZkp7q19f0",
-        "url": "https://www.youtube.com/watch?v=9bZkp7q19f0",
         "title_contains": "GANGNAM STYLE",
         "channel_contains": "officialpsy",
         "min_views": 1000000000,  # Over 1B views
@@ -78,18 +75,6 @@ class TestE2EAPIStrategy:
         assert result["views"] >= video_data["min_views"]
         assert str(video_data["year"]) in result["publication_date"]
         assert result["extraction_method"] == "youtube_api"
-
-    def test_api_single_video_by_url(self):
-        """Test API extraction with full URL"""
-        extractor = YouTubeVideoInfoExtractor(api_key=self.api_key, strategy="api")
-
-        video_data = TEST_VIDEOS["rick_roll"]
-        result = extractor.get_video_info(video_data["url"])
-
-        assert result is not None
-        assert video_data["title_contains"] in result["title"]
-        assert result["channel_name"] == video_data["channel"]
-        assert result["views"] >= video_data["min_views"]
 
     def test_api_batch_extraction(self):
         """Test API batch extraction"""
@@ -140,25 +125,6 @@ class TestE2EYtDlpStrategy:
         assert result["channel_name"] == video_data["channel"]
         assert result["views"] >= video_data["min_views"]
         assert result["extraction_method"] == "yt_dlp"
-
-    def test_yt_dlp_url_formats(self):
-        """Test yt-dlp with different URL formats"""
-        extractor = YouTubeVideoInfoExtractor(strategy="yt_dlp")
-
-        if "yt_dlp" not in extractor.get_available_strategies():
-            pytest.skip("yt-dlp not available")
-
-        # Test different URL formats
-        urls = [
-            "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-            "https://youtu.be/jNQXAC9IVRw",
-            "jNQXAC9IVRw",
-        ]
-
-        for url in urls:
-            result = extractor.get_video_info(url)
-            assert result is not None
-            assert "Me at the zoo" in result["title"]
 
     def test_yt_dlp_high_view_count_video(self):
         """Test yt-dlp with high view count video"""
