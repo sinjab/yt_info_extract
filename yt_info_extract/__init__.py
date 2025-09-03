@@ -26,7 +26,7 @@ Features:
     - Robust error handling and retry logic
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 __author__ = "Khaldoon Sinjab"
 __email__ = "sinjab@gmail.com"
 __description__ = "YouTube video information extraction with multiple strategies"

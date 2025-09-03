@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "yt-info-extract"
-version = "1.0.0"
+version = "1.1.0"
 description = "Extract video information from YouTube videos including title, description, channel name, publication date and views"
 readme = "README.md"
 license = {file = "LICENSE"}
