@@ -1,6 +1,6 @@
 # YouTube Video Information Extractor
 
-[![CI/CD Pipeline](https://github.com/sinjab/yt_info_extract/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/sinjab/yt_info_extract/actions)
+[![CI](https://github.com/sinjab/yt_info_extract/workflows/CI/badge.svg)](https://github.com/sinjab/yt_info_extract/actions)
 [![PyPI version](https://badge.fury.io/py/yt-info-extract.svg)](https://badge.fury.io/py/yt-info-extract)
 [![Python Support](https://img.shields.io/pypi/pyversions/yt-info-extract.svg)](https://pypi.org/project/yt-info-extract/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
