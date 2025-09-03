@@ -177,3 +177,7 @@ api_key.txt
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Claude
+CLAUDE.md
+.claude/
