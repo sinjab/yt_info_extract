@@ -1,5 +1,12 @@
 # YouTube Video Information Extractor
 
+[![CI/CD Pipeline](https://github.com/sinjab/yt_info_extract/workflows/CI/CD%20Pipeline/badge.svg)](https://github.com/sinjab/yt_info_extract/actions)
+[![PyPI version](https://badge.fury.io/py/yt-info-extract.svg)](https://badge.fury.io/py/yt-info-extract)
+[![Python Support](https://img.shields.io/pypi/pyversions/yt-info-extract.svg)](https://pypi.org/project/yt-info-extract/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Code Coverage](https://codecov.io/gh/sinjab/yt_info_extract/branch/main/graph/badge.svg)](https://codecov.io/gh/sinjab/yt_info_extract)
+[![Code Quality](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 A robust Python library for extracting YouTube video metadata including title, description, channel name, publication date, and view count with multiple extraction strategies.
 
 ## Features
