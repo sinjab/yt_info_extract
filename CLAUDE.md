@@ -8,10 +8,20 @@ This document provides context for AI assistants working with the `yt_info_extra
 
 ## Project Status
 
-**Published**: Available on PyPI as `yt-info-extract` v1.0.0  
+**Published**: Available on PyPI as `yt-info-extract` v1.1.0  
 **CI/CD**: Simplified GitHub Actions workflows for reliable testing and deployment  
-**Test Coverage**: 94% comprehensive test coverage with unit and E2E tests  
+**Test Coverage**: 95% comprehensive test coverage with unit and E2E tests  
 **Installation**: `pip install yt-info-extract`
+
+### Recent Breaking Changes (v1.1.0)
+
+**BREAKING CHANGE**: As of v1.1.0, the library **only accepts YouTube video IDs** and no longer processes URLs.
+
+- **Removed**: All URL parsing and validation capabilities
+- **Changed**: `_extract_video_id()` → `_validate_video_id()` for strict ID validation
+- **Input Format**: Only 11-character video IDs (A-Z, a-z, 0-9, _, -) are accepted
+- **Error Handling**: URLs now return clear error messages instead of being processed
+- **Migration**: Users must extract video IDs manually from URLs if needed
 
 ## Technical Architecture
 
@@ -19,9 +29,10 @@ This document provides context for AI assistants working with the `yt_info_extra
 
 1. **Multi-Strategy Extraction**: Primary (YouTube Data API v3) with intelligent fallbacks (yt-dlp, pytubefix)
 2. **Graceful Degradation**: Automatic strategy switching when methods fail
-3. **Rate Limiting**: Respectful of YouTube's servers with configurable delays
-4. **Comprehensive Error Handling**: Robust retry logic with exponential backoff
-5. **Multiple Interfaces**: Library API, CLI tool, and convenience functions
+3. **Video ID Only Processing**: Strict validation of 11-character YouTube video IDs
+4. **Rate Limiting**: Respectful of YouTube's servers with configurable delays
+5. **Comprehensive Error Handling**: Robust retry logic with exponential backoff
+6. **Multiple Interfaces**: Library API, CLI tool, and convenience functions
 
 ### Key Components
 
@@ -138,7 +149,7 @@ Current bottlenecks and considerations:
 ### Data Handling
 
 - No sensitive data stored or logged
-- Proper URL validation to prevent injection
+- Strict video ID validation to prevent injection
 - Rate limiting to prevent abuse
 - Graceful handling of malformed responses
 
@@ -264,8 +275,8 @@ yt-info --api-key $KEY --strategy api video_id
 #### Release Workflow (`.github/workflows/release.yml`)
 - **Trigger**: New tags matching `v*.*.*`
 - **Platform**: Ubuntu latest
-- **Features**: Automated PyPI publishing via trusted publishing
-- **Security**: Uses OpenID Connect tokens for secure publishing
+- **Features**: Automated PyPI publishing via API token
+- **Security**: Uses GitHub Secrets for secure PyPI authentication
 
 ### Development Commands
 
@@ -312,6 +323,7 @@ The project evolved from complex multi-platform CI/CD to simplified, reliable wo
 4. **PyPI Publication**: Official package publication as `yt-info-extract`
 5. **CI/CD Optimization**: Workflow simplification for reliability
 6. **Production Ready**: Stable v1.0.0 release with comprehensive documentation
+7. **API Simplification**: v1.1.0 breaking change to remove URL processing complexity
 
 ### Lessons Learned
 
@@ -319,5 +331,7 @@ The project evolved from complex multi-platform CI/CD to simplified, reliable wo
 - **Workflow Complexity**: Overly complex CI/CD pipelines reduce reliability
 - **Cross-Platform Testing**: Not always necessary for Python libraries with standard dependencies
 - **Code Formatting**: Essential for maintaining code quality in collaborative development
+- **API Simplicity**: Removing complex URL processing improved reliability and maintainability
+- **Breaking Changes**: Clear versioning and documentation essential for user communication
 
 This documentation should help AI assistants understand the project's architecture, design decisions, development history, and current production status when providing assistance with code modifications, debugging, or feature additions.
