@@ -144,8 +144,8 @@ jobs:
     - name: Verify installation
       shell: bash
       run: |
-        python -c "import yt_info_extract; print('✅ Import successful')"
-        python -c "from yt_info_extract import get_video_info; print('✅ Functions available')"
+        python -c "import yt_info_extract; print('Import successful')"
+        python -c "from yt_info_extract import get_video_info; print('Functions available')"
         yt-info --version || echo "CLI available"
 
   github-release:
