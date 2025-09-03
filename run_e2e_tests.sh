@@ -9,8 +9,12 @@ echo ""
 
 # Check if API key is set
 if [ -z "$YOUTUBE_API_KEY" ]; then
-    echo "⚠️  Warning: YOUTUBE_API_KEY not set. API tests will be skipped."
-    echo "   To run API tests, set: export YOUTUBE_API_KEY='your_key'"
+    echo "ℹ️  YouTube API key not set - using fallback methods"
+    echo "   API tests will be skipped, fallback methods (yt-dlp, pytubefix) will be tested"
+    echo "   To enable API tests: export YOUTUBE_API_KEY='your_key'"
+    echo ""
+else
+    echo "✅ YouTube API key configured - full test suite available"
     echo ""
 fi
 
@@ -45,10 +49,19 @@ case $TEST_GROUP in
         ;;
     5)
         echo "Running quick smoke test..."
-        pytest tests/test_e2e.py::TestE2EConvenienceFunctions::test_get_video_info_function \
-               tests/test_e2e.py::TestE2EAutoStrategy::test_auto_strategy_selection \
-               tests/test_e2e.py::TestE2ECLI::test_cli_single_video \
-               -m e2e -v
+        if [ -z "$YOUTUBE_API_KEY" ]; then
+            # Run without API key - test fallback methods
+            pytest tests/test_e2e.py::TestE2EAutoStrategy::test_auto_strategy_selection \
+                   tests/test_e2e.py::TestE2EYtDlpStrategy::test_yt_dlp_single_video \
+                   tests/test_e2e.py::TestE2ECLI::test_cli_single_video \
+                   -m e2e -v
+        else
+            # Run with API key - full test suite
+            pytest tests/test_e2e.py::TestE2EConvenienceFunctions::test_get_video_info_function \
+                   tests/test_e2e.py::TestE2EAutoStrategy::test_auto_strategy_selection \
+                   tests/test_e2e.py::TestE2ECLI::test_cli_single_video \
+                   -m e2e -v
+        fi
         ;;
     *)
         echo "Invalid option. Please choose 1-5"
